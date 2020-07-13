@@ -694,8 +694,6 @@ class Population:
         # `utils.validate_boundaries` checks
         run_validation = False
         if isinstance(boundaries, np.ndarray):
-            print(boundaries.shape)
-            print((*self.x.shape[1:], 2))
             if boundaries.shape != (*self.x.shape[1:], 2):
                 run_validation = True
         elif boundaries is not None:
