@@ -44,27 +44,28 @@ def test_creation_width():
 
 def test_callbacks():
     pf = ParticleFilter(func, 100)
-    pf.set_callback('at_start_of_iteration', callback)
-    assert pf._callbacks['at_start_of_iteration'] == callback
-    pf.set_callback('at_start_of_iteration', None)
+    pf.add_callback('at_start_of_iteration', callback)
+    assert pf._callbacks['at_start_of_iteration'] == [callback]
+    pf.add_callback('at_start_of_iteration')
+    assert pf._callbacks['at_start_of_iteration'] == []
 
 
 def test_callback_errors():
     pf = ParticleFilter(func, 100)
     with pytest.raises(TypeError):
-        pf.set_callback("at_start_of_iteration", "callback")
+        pf.add_callback("at_start_of_iteration", "callback")
     with pytest.raises(ValueError):
-        pf.set_callback("at_start_of_iteration", incorrect_callback)
+        pf.add_callback("at_start_of_iteration", incorrect_callback)
     with pytest.raises(ValueError):
-        pf.set_callback("at_some_undefined_point", callback)
+        pf.add_callback("at_some_undefined_point", callback)
 
 
 def test_callback_call():
     pf = ParticleFilter(func, 100)
-    pf.set_callback("at_start_of_run", callback)
+    pf.add_callback("at_start_of_run", callback)
     with pytest.raises(NotImplementedError):
         pf.callback("at_start_of_run")
-    pf.set_callback("at_start_of_run")
+    pf.add_callback("at_start_of_run")
     pf.callback("at_start_of_run")
 
 
@@ -94,7 +95,7 @@ def test_function_errors():
 
 def test_initialise_run():
     pf = ParticleFilter(func, 100)
-    pf.set_callback("at_start_of_run", callback)
+    pf.add_callback("at_start_of_run", callback)
     pf.iteration = 100
     assert pf.iteration == 100
     with pytest.raises(NotImplementedError):

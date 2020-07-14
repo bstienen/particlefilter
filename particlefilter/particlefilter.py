@@ -316,29 +316,29 @@ class ParticleFilter:
 
     def _init_callbacks_dictionary(self):
         """ Initialises the internal dictionary in which handles to callbacks
-        will be stored. Use the `set_callback` and `callback` methods to set
+        will be stored. Use the `add_callback` and `callback` methods to add
         and run these callbacks."""
         self._callbacks = {
-            'after_population_init': None,
-            'at_start_of_run': None,
-            'at_start_of_iteration': None,
-            'before_width_controller_call': None,
-            'after_width_controller_call': None,
-            'before_selection': None,
-            'after_selection': None,
-            'before_stdev_controller_call': None,
-            'after_stdev_controller_call': None,
-            'before_procreation': None,
-            'after_procreation': None,
-            'before_kill_controller_call': None,
-            'after_kill_controller_call': None,
-            'before_kill_data': None,
-            'after_kill_data': None,
-            'at_end_of_iteration': None,
+            'after_population_init': [],
+            'at_start_of_run': [],
+            'at_start_of_iteration': [],
+            'before_width_controller_call': [],
+            'after_width_controller_call': [],
+            'before_selection': [],
+            'after_selection': [],
+            'before_stdev_controller_call': [],
+            'after_stdev_controller_call': [],
+            'before_procreation': [],
+            'after_procreation': [],
+            'before_kill_controller_call': [],
+            'after_kill_controller_call': [],
+            'before_kill_data': [],
+            'after_kill_data': [],
+            'at_end_of_iteration': [],
         }
 
-    def set_callback(self, name, function=None):
-        """ Sets a callback function (or resets a callback function).
+    def add_callback(self, name, function=None):
+        """ Adds a callback function (or resets a callback function).
 
         The ParticleFilter class implements a variety of callback handles
         which can be filled by the user with callables through this method. See
@@ -352,7 +352,7 @@ class ParticleFilter:
 
         Args:
             name: Name of the callback, defining when the callback will be
-                called (or which callback needs to be removed, if `function`
+                called (or which callbacks need to be removed, if `function`
                 was set to `None`).
             function: A callable or `None`, defining the function that should
                 be called when the callback condition is satisfied. If `None`
@@ -362,7 +362,10 @@ class ParticleFilter:
         name = self.validate_callback_name(name)
         function = self.validate_callback(function)
         # Store handle in callback dictionary
-        self._callbacks[name] = function
+        if function is None:
+            self._callbacks[name] = []
+        else:
+            self._callbacks[name].append(function)
 
     def callback(self, name):
         """ Runs the callback with provided name if the name exists. See the
@@ -376,10 +379,9 @@ class ParticleFilter:
                 attempts call. """
         # Check if `name` exists as a callback
         name = self.validate_callback_name(name)
-        # Check if callback is not `None` and if not, call it
-        if self._callbacks[name] is not None:
-            self._callbacks[name](self.iteration, self.width, self.function,
-                                  self.population)
+        # Run all callbacks associated with the provided name
+        for cb in self._callbacks[name]:
+            cb(self.iteration, self.width, self.function, self.population)
 
     """ Data and function methods """
     # Particle filters play with data: they sample new data, select interesting
