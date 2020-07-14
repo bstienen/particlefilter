@@ -226,13 +226,13 @@ class Population:
                 deviations have to be set first. You can do this through the
                 `set_stdevs` method."""
         # Check if procreation rate and stdev are not an arrays of nans
-        if np.sum(np.isnan(self.procreation_rates)) == len(self):
+        if np.sum(np.isnan(self.procreation_rates)) == np.prod(self.x.shape):
             raise Exception("To get the mean and standard deviation of the "
                             "current population of stored data points for "
                             "sampling, the procreation rate has to be set "
                             "first. You can do this through the "
                             "`set_procreation_rates` method.")
-        if np.sum(np.isnan(self.stdevs)) >= len(self):
+        if np.sum(np.isnan(self.stdevs)) == np.prod(self.x.shape):
             raise Exception("To get the mean and standard deviation of the "
                             "current population of stored data points for "
                             "sampling, the standard deviations have to be set "
