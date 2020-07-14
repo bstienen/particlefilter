@@ -554,7 +554,7 @@ class ParticleFilter:
         # Determine which points are killed at the end of this iteration using
         # the kill controller
         self.callback('before_kill_controller_call')
-        _, y, origin = self.population.get_data_with_origin()
+        _, y, origin = self.population.get_data_with_origin_information()
         is_new = (origin == self.iteration)
         kill_list = self.kill_controller(y, is_new, self.iteration_size)
         self.population.set_kill_list(kill_list)

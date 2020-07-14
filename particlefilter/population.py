@@ -142,7 +142,7 @@ class Population:
                 `x`. """
         return (self.x, self.y)
 
-    def get_data_with_origin(self):
+    def get_data_with_origin_information(self):
         """ Returns all data point coordinates `x`, their function values
         `y` and their iteration of origin. All these are arrays with the same
         length.
