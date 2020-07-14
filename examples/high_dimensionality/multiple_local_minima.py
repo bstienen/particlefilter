@@ -9,16 +9,9 @@ the basic/multiple_local_minima.py example:
 
     f(r) = - cos(r) + 0.25*r
         with r = np.sqrt( sum( x_i**2 ) )
-
-This script requires the celluloid python package to be installed, as it also
-outputs how the function values develop over the iterations. The
-high_dimensionality/multiple_local_minima.py script contains the same code, but
-does not make this animation.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
-from celluloid import Camera
 import particlefilter as pf
 
 # Let's define the number of dimensions, the seed size and the iteration size
@@ -80,12 +73,6 @@ optimiser = pf.ParticleFilter(function=func,
                               stdev_controller=stdev_controller)
 optimiser.set_seed(x_seed, y_seed)
 
-# Before we run the iterations, we initialise the figure and camera object
-# needed for the animation.
-fig = plt.figure()
-camera = Camera(fig)
-hist_max = np.sqrt(15*15*n_dimensions)+1
-
 # Let's run the optimisation.
 n_iterations = 250
 optimiser.initialise_run()
@@ -94,19 +81,7 @@ for iteration in range(1, n_iterations+1):
     if iteration % 10 == 0:
         print("Iteration {}".format(iteration))
     optimiser.run_iteration()
-    # Create histogram
-    x, _ = optimiser.population.get_data()
-    plt.hist(get_distance_to_minimum(x), 20)
-    plt.title("Width: {}".format(round(optimiser.width, 6)))
-    plt.xscale('log')
-    plt.yscale('log')
-    camera.snap()
 
-optimiser.population.save("population.csv")
-
-# Store the animation as convex.mp4 in the current folder.
-animation = camera.animate()
-animation.save('multiple_local_minima.mp4')
 
 # As we are however interested in the minimum, so let's print the point (and
 # the function value) for the smallest point found.
