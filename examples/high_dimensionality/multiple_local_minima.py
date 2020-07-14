@@ -82,7 +82,6 @@ for iteration in range(1, n_iterations+1):
         print("Iteration {}".format(iteration))
     optimiser.run_iteration()
 
-
 # As we are however interested in the minimum, so let's print the point (and
 # the function value) for the smallest point found.
 x, y = optimiser.population.get_data()
