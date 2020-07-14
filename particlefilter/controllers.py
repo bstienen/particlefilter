@@ -151,6 +151,7 @@ def get_kill_controller(survival_rate=0.2, cut_to_iteration_size=False):
 
 def get_stdev_controller(min_stdev=0.0,
                          max_stdev=np.inf,
+                         scales_with_boundary=True,
                          logarithmic=False,
                          inf_replace=1e12):
     """ Get a simple standard deviation controller. See docstring of the
@@ -163,6 +164,12 @@ def get_stdev_controller(min_stdev=0.0,
         max_stdev: Maximum value standard deviations are allowed to have. All
             values above this value will be clipped to `max_stdev`. Default
             value is `numpy.inf`.
+        scales_with_boundary: If set to `True`, the standard deviation scales
+            linearly with the ranges allowed by the boundaries provided to
+            the controller. Although this is the default, it might not be
+            what you want for problem without boundaries. Setting this
+            argument to `False` removes the dependence on the boundary
+            entirely. See controller docstring for more information.
         logarithmic: `bool` indicating if the controller should run in
             `logarithmic` mode. See controller docstring for more information.
             Default is `False`.
@@ -186,12 +193,11 @@ def get_stdev_controller(min_stdev=0.0,
     # Define controller
     def controller(width, boundaries, x):
         """ Standard deviation controller that calculates the standard
-        deviations of points `x` as a fraction `width` of the available
-        parameter range:  width * range.
-
-        If the `logarithmic` argument of the currying function was set to
-        `True`, the calculated standard deviations are also multiplied by the
-        coordinates `x`.
+        deviations of points `x`. The standard deviations are set to `width`
+        and are multiplied by the ranges for each dimension, as set by
+        `boundaries`, if `scales_with_boundary` in the currying function was
+        `True`, and multiplied by `x` if `logarithmic` argument of the currying
+        function was set to `True`.
 
         Post-processing of the calculated standard deviations amounts to
         clipping the values to the `min_stdev` and `max_stdev` defined by the
@@ -221,39 +227,44 @@ def get_stdev_controller(min_stdev=0.0,
             ValueError: Boundaries provided as an array needs to have a shape
                 of `(nDatapoints, nDimensions)` (= (?)). Provided was an array
                 of shape (?). """
-        # Check and convert boundaries to right shape and type
-        # If boundaries is None, we replace it with an array filled with
-        # -np.inf and np.inf (to be later replaced with the value of
-        # `inf_replace`)
-        if boundaries is None:
-            boundaries = np.ones((x.shape[1], 2)) * np.inf
-            boundaries[:, 0] *= -1
-        # Else boundaries has to have shape `(x.shape[0], 2)`
-        if not isinstance(boundaries, np.ndarray):
-            raise ValueError("Boundaries of the parameter range have to be "
-                             "provided as `None` or as a `numpy.ndarray`. "
-                             "Provided was a(n) {}.".format(type(boundaries)))
-        if boundaries.shape != (x.shape[1], 2):
-            raise ValueError("Boundaries provided as an array needs to have "
-                             "a shape of `(nDatapoints, nDimensions)` (= {}). "
-                             "Provided was an array of shape {}.".format(
-                                 x.shape, boundaries.shape))
-        # Replace infinite values with inf_replace
-        boundaries[boundaries == np.inf] = inf_replace
-        boundaries[boundaries == -np.inf] = -inf_replace
-        # First we determine the ranges of the function, i.e. the size of the
-        # parameter space as defined by the boundaries.
-        ranges = boundaries[..., 1] - boundaries[..., 0]
-        # Linear standard deviations are then given by the width parameter
-        # multiplied by this range.
-        stdevs = width * ranges
+        # Set standard deviations to its base value: the provided width
+        stdevs = width*np.ones(x.shape)
+        print(stdevs.shape)
+        # Check if need to multiply with ranges as determined in the
+        # currying function.
+        if scales_with_boundary:
+            # Check and convert boundaries to right shape and type
+            # If boundaries is None, we replace it with an array filled with
+            # -np.inf and np.inf (to be later replaced with the value of
+            # `inf_replace`)
+            if boundaries is None:
+                boundaries = np.ones((x.shape[1], 2)) * np.inf
+                boundaries[:, 0] *= -1
+            # Else boundaries has to have shape `(x.shape[0], 2)`
+            if not isinstance(boundaries, np.ndarray):
+                raise ValueError("Boundaries of the parameter range have to "
+                                 "be provided as `None` or as a "
+                                 "`numpy.ndarray`. Provided was "
+                                 "a(n) {}.".format(type(boundaries)))
+            if boundaries.shape != (x.shape[1], 2):
+                raise ValueError("Boundaries provided as an array needs to "
+                                 "have a shape of `(nDatapoints, nDimensions)`"
+                                 " (= {}). Provided was an array of "
+                                 "shape {}.".format(x.shape, boundaries.shape))
+            # Replace infinite values with inf_replace
+            boundaries[boundaries == np.inf] = inf_replace
+            boundaries[boundaries == -np.inf] = -inf_replace
+            # First we determine the ranges of the function, i.e. the size of
+            # theparameter space as defined by the boundaries.
+            ranges = boundaries[..., 1] - boundaries[..., 0]
+            # Linear standard deviations are then given by the width parameter
+            # multiplied by this range.
+            stdevs = stdevs * ranges
         # If running in logarithmic mode, the standard deviations multiply
         # the result of this calculation by the coordinate. Else, multiply the
         # result by an array of ones to match the right shape
         if logarithmic:
             stdevs = stdevs * x
-        else:
-            stdevs = stdevs * np.ones(x.shape)
         # Before returning the stdevs we bound the stdevs using the `min_stdev`
         # and `max_stdev` argument of the decorator function, after which we
         # return the calculated values.

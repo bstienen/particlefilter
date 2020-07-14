@@ -163,6 +163,18 @@ def test_stdev_controller_defaults():
     assert np.array_equal(expectation, reality)
 
 
+def test_stdev_controller_notboundaryscaling():
+    func = get_stdev_controller(scales_with_boundary=False)
+
+    width = 0.1
+    boundaries = np.array([[-1, 1], [0, 20]])
+    x = np.random.rand(10, 2)
+
+    expectation = np.ones(x.shape)*0.1
+    reality = func(width, boundaries, x)
+    assert np.array_equal(expectation, reality)
+
+
 def test_stdev_controller_none_boundaries():
     func = get_stdev_controller(inf_replace=10)
 
