@@ -1,3 +1,12 @@
+"""
+Example particlefilter code: basic/convex.py
+--------------------------------------------
+The most basic of applications of the particle filter: a convex optimisation
+problem. This code is almost as bare bones as it could be, were it not for the
+overhead code present at the end file to validate the performance of the
+algorithm.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import particlefilter as pf
@@ -16,7 +25,7 @@ def func(x):
 # As this function is defined over the entire parameter space, we guide the
 # sampling by the particle filter by defining boundaries within which we will
 # be looking for the minimum. Boundaries are defined through an array of shape
-# `(nDimensions, 2)``, where the last axis contains the lower and upper
+# `(nDimensions, 2)`, where the last axis contains the lower and upper
 # boundary (in that order) for each of the dimensions.
 boundaries = np.array([[-10, 10], [-10, 10]])
 
@@ -29,7 +38,7 @@ x_seed = np.random.rand(n_seed, 2)*dx + boundaries[:, 0]
 y_seed = func(x_seed)
 
 # With all this information available, we can initialise the particle filter
-# object and set the seed equal to the data we just calculated
+# object and set the seed equal to the data we just calculated.
 optimiser = pf.ParticleFilter(function=func,
                               iteration_size=100,
                               boundaries=boundaries)
@@ -49,7 +58,8 @@ for iteration in range(n_iterations):
 # the latest iteration in a scatter plot (with function values indicated by
 # their colour), together with the seed (drawn as crosses).
 x, y = optimiser.population.get_data()
-plt.scatter(x_seed[:, 0], x_seed[:, 1], c=y_seed, marker='x', label="Seed")
+plt.scatter(x_seed[:, 0], x_seed[:, 1],
+            c=y_seed, marker='x', label="Seed", alpha=0.5)
 plt.scatter(x[:, 0], x[:, 1], c='k', s=10, label="Last iteration")
 plt.scatter([location_minimum[0]], [location_minimum[1]],
             c='r', marker="*", label="Actual minimum")
