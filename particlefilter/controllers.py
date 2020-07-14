@@ -229,7 +229,6 @@ def get_stdev_controller(min_stdev=0.0,
                 of shape (?). """
         # Set standard deviations to its base value: the provided width
         stdevs = width*np.ones(x.shape)
-        print(stdevs.shape)
         # Check if need to multiply with ranges as determined in the
         # currying function.
         if scales_with_boundary:
