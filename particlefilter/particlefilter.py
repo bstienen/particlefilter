@@ -523,8 +523,8 @@ class ParticleFilter:
         6a. Remove the points on the kill list, together with their function
             values, from the ParticleFilter.
         6b. End iteration. """
-        self.callback('at_start_of_iteration')
         self.iteration += 1
+        self.callback('at_start_of_iteration')
         # Update the width using the width_controller
         self.callback('before_width_controller_call')
         self.width = self.width_controller(self.iteration - 1, self.width)
