@@ -13,7 +13,8 @@ A callback function should take exactly four arguments.
 With this information we can for example write a callback that prints the width parameter:
 
     def callback_function(iteration, width, function, population):
-        print("Iteration {} has width parameter {}".format(iteration, width))
+        print("Iteration {} has width parameter {}".format(
+            iteration, width))
 
 ## Adding a callback
 To add a callback, you run the `add_callback` method on your `ParticleFilter` object. This method takes two arguments: the location at which your callback should be called (see below) and the handle of your callback function. So for example:
