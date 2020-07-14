@@ -174,7 +174,6 @@ class ParticleFilter:
         - before_kill_controller_call
         - after_kill_controller_call
         - before_kill_data
-        - after_kill_data
         - at_end_of_iteration
 
         Args:
@@ -333,7 +332,6 @@ class ParticleFilter:
             'before_kill_controller_call': [],
             'after_kill_controller_call': [],
             'before_kill_data': [],
-            'after_kill_data': [],
             'at_end_of_iteration': [],
         }
 
@@ -530,7 +528,7 @@ class ParticleFilter:
         # Update the width using the width_controller
         self.callback('before_width_controller_call')
         self.width = self.width_controller(self.iteration - 1, self.width)
-        self.callback('at_end_of_iteration')
+        self.callback('after_width_controller_call')
         # Calculate procreation rate
         self.callback('before_selection')
         x, y = self.population.get_data()
