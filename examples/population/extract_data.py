@@ -64,6 +64,11 @@ mean, stdevs = population.get_means_and_stdevs_for_sampling()
 # If we only want to get the most recently added data:
 x, y = population.get_latest_data()
 
+# Or more general: if you want to get the data from a specific iteration you
+# can use the following method. Note that this only returns the data that is
+# still in the population (i.e. is not removed in the mean time)
+x, y = population.get_data_by_origin(origin_id=0)
+
 # To get all data points that will be procreating the current iteration, we run
 # the `get_procreating_data` method. This will return all data with a
 # procreation rate of at least 1.

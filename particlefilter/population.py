@@ -193,7 +193,23 @@ class Population:
             y: numpy.ndarray containing the function values for the returned
                 `x`. """
         latest_id = np.amax(self.origin_iteration)
-        indices = self.origin_iteration == latest_id
+        return self.get_data_by_origin(latest_id)
+    
+    def get_data_by_origin(self, origin_id):
+        """ Returns all data point coorindates `x` and associated function
+        values `y` that originated from the provided origin 
+
+        Args:
+            origin_id: `int` indicating the origin iteration of the data
+                to be returned.
+
+        Returns:
+            x: numpy.ndarray containing the data point coordinates that were
+                added in the indicated iteration.
+            y: numpy.ndarray containing the function values for the returned
+                `x`. """
+        origin_id = int(origin_id)
+        indices = self.origin_iteration == origin_id
         return (self.x[indices], self.y[indices])
 
     def get_function_extremes(self):
