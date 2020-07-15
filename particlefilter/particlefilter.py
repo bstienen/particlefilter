@@ -301,7 +301,7 @@ class ParticleFilter:
                                 function, type(function)))
         sig = signature(function)
         if len(sig.parameters) != 1:
-            raise ValueError("Labeling functions need to take one arguments: "
+            raise ValueError("Labeling functions need to take one argument: "
                              "the coordindates `x` for which the labels `y` "
                              "need to be determined. The provided function "
                              "takes {} arguments instead.".format(
