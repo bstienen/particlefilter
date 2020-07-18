@@ -194,10 +194,10 @@ class Population:
                 `x`. """
         latest_id = np.amax(self.origin_iteration)
         return self.get_data_by_origin(latest_id)
-    
+
     def get_data_by_origin(self, origin_id):
         """ Returns all data point coorindates `x` and associated function
-        values `y` that originated from the provided origin 
+        values `y` that originated from the provided origin
 
         Args:
             origin_id: `int` indicating the origin iteration of the data
