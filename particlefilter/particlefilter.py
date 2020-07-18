@@ -497,19 +497,21 @@ class ParticleFilter:
         """ This method runs an interation of the particle filter algorithm.
 
         In an iteration, the following steps are taken in order:
+
         1.  Update the width using the `width_controller`;
         2.  Calculate procreation rates using `calculate_procreation_rates`;
         3.  Calculate the standard deviations for the normal distributions with
-        the provided `stdev_controller`;
-        4a. Sample new points
-        4b. Evaluate their function values using the `function` provided at
-        initialisation of the `ParticleFilter` object.
-        4c. Store the samples and their function values.
-        5.  Determine which data points should be removed from the population
-        with the `kill_controller`.
-        6a. Remove the points on the kill list, together with their function
-        values, from the ParticleFilter.
-        6b. End iteration. """
+            the provided `stdev_controller`;
+        4.  Sample new points
+        5.  Evaluate their function values using the `function` provided at
+            initialisation of the `ParticleFilter` object.
+        6.  Store the samples and their function values.
+        7.  Determine which data points should be removed from the population
+            with the `kill_controller`.
+        8.  Remove the points on the kill list, together with their function
+            values, from the ParticleFilter.
+        9.  End iteration.
+        """
         self.iteration += 1
         self.callback('at_start_of_iteration')
         # Update the width using the width_controller
