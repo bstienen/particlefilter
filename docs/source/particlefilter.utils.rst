@@ -1,5 +1,5 @@
-utils
-=====
+particlefilter.utils module
+===========================
 
 .. automodule:: particlefilter.utils
     :members:

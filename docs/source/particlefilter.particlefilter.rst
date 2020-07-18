@@ -1,7 +1,7 @@
-ParticleFilter class
-====================
+particlefilter.particlefilter module
+====================================
 
-.. autoclass:: particlefilter.particlefilter.ParticleFilter
+.. automodule:: particlefilter.particlefilter
     :members:
     :undoc-members:
     :show-inheritance:

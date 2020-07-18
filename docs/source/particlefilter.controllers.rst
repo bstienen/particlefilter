@@ -1,5 +1,5 @@
-controllers functions
-=====================
+particlefilter.controllers module
+=================================
 
 .. automodule:: particlefilter.controllers
     :members:

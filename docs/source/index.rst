@@ -8,7 +8,25 @@ Welcome to Gaussian Particle Filter's documentation!
 
 .. toctree::
    :maxdepth: 2
+   :caption: Basics
+   :name: toc_basics
+
+   pages/algorithm
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Implementation
+   :name: toc_implementation
+
+   pages/particlefilter
+   pages/population
+   pages/controllers
+   pages/callbacks
+
+.. toctree::
+   :maxdepth: 2
    :caption: API
+   :name: toc_api
 
    particlefilter.particlefilter
    particlefilter.population
@@ -17,11 +35,8 @@ Welcome to Gaussian Particle Filter's documentation!
    particlefilter.utils
 
 
-
 Indices and tables
 ==================
 
-* :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

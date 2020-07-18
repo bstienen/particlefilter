@@ -1,5 +1,5 @@
-sampler functions
-=================
+particlefilter.samplers module
+==============================
 
 .. automodule:: particlefilter.samplers
     :members:

@@ -1,7 +1,7 @@
-Population class
-================
+particlefilter.population module
+================================
 
-.. autoclass:: particlefilter.population.Population
+.. automodule:: particlefilter.population
     :members:
     :undoc-members:
     :show-inheritance:
