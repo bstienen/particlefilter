@@ -154,7 +154,7 @@ class Population:
             y: `numpy.ndarray` containing the function values for the returned
                 `x`.
             origin: `numpy.ndarray` containing the iteration ID in which each
-                of the data points in `x`was sampled. """
+                of the data points in `x` was sampled. """
         return (self.x, self.y, self.origin_iteration)
 
     def get_procreating_data(self):
@@ -271,7 +271,7 @@ class Population:
     # with (except for the `self` argument).
 
     def validate_input_data(self, x, y):
-        """ Checks if the input arrays `x` and `y` are `numpy.ndarray`s and
+        """ Checks if the input arrays `x` and `y` are `numpy.ndarray` s and
         have the correct shape.
 
         The coorindates of the input data `x` should be at least 2-dimensional
@@ -473,12 +473,12 @@ class Population:
     def validate_kill_list(self, kill_list):
         """ Validates the provided `kill_list` for its length and contents.
 
-        `kill_list`s should have a length equal to the number of data points
+        `kill_list` s should have a length equal to the number of data points
         currently contained in the Population object and should only
         contain boolean values or values that could be converted to booleans.
 
         Although the name `kill_list` seems to suggest that it should be a
-        list, it is also allowed to be a `numpy.ndarray`. If it is indeed a
+        list, it is also allowed to be a `numpy.ndarray` . If it is indeed a
         numpy array, not the length but the number of entries in the array
         should match the number of data points in the population.
 
@@ -487,11 +487,11 @@ class Population:
 
         Returns:
             The provided kill_list, reshaped to `(n, 1)` if provided as a
-            `numpy.ndarray`, where `n` equals the number of data points
+            `numpy.ndarray` , where `n` equals the number of data points
             currently stored in the population.
 
         Raises:
-            TypeError: `kill_list`s should be `numpy.ndarray`s or `list`s.
+            TypeError: `kill_list`s should be `numpy.ndarray` s or `list` s.
                 Provided was a(n) (?).
             ValueError: The length of the provided `kill_list` (?) does not
                 match the number of data points currently in the

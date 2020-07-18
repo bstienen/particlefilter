@@ -22,23 +22,6 @@ class ParticleFilter:
     stores an instance of `population.Population`. The `ParticleFilter` can be
     seen as a conductor of sorts of this object.
 
-    One of the simplest usages of the `ParticleFilter`, that runs with all
-    default settings is the following code. It defines data and runs 10
-    iterations of the particle filter algorithm on it in just 10 lines (!).
-
-        def function(x):
-            return np.sum(np.power(x, 2), axis=1)
-
-        x = np.random.rand(100, 2)
-        y = label(x)
-
-        pf = ParticleFilter(function, 100,
-                            boundaries=np.array([[0, 1], [0, 1]]))
-        pf.set_seed(x, y)
-        pf.initialise_run()
-        for iteration in range(10):
-            pf.run_iteration()
-
     To make the code more transparent, the `ParticleFilter` class implements
     user-definable callbacks. These callbacks should take four parameters:
     the iteration number, the current width parameter, the function defined
@@ -87,9 +70,10 @@ class ParticleFilter:
             happens to appear there. `-np.inf` is replaced with `-inf_replace`.
 
     Attributes:
-        boundaries: Boundaries within which all samples must be sampled
-        function: Callable that gives for coordinates `x` the function values
-            `y`
+        boundaries (:obj:`list`): Boundaries within which all samples must be
+            sampled.
+        function (:obj:`callable`): Callable that gives for coordinates `x` the
+            function values `y`.
         inf_replace: Value with with infinities are placed in boundaries if
             they occur.
         initial_width: The initial width parameter at the start of a run. Its
@@ -373,8 +357,8 @@ class ParticleFilter:
         If the requested callback is `None`, the request is ignored.
 
         Args:
-            name: Name of the callback, defining which callback will be
-                attempts call. """
+            name (:obj:`str`): Name of the callback, defining which callback
+                will be attempts call. """
         # Check if `name` exists as a callback
         name = self.validate_callback_name(name)
         # Run all callbacks associated with the provided name
@@ -388,11 +372,12 @@ class ParticleFilter:
     # be called in a single line. Keeps the code nice and clean ^^.
 
     def set_seed(self, x, y):
-        """ Creates a new `Population` instance and stores the provided
+        """
+        Creates a new `Population` instance and stores the provided
         coordinates `x` and function values `y` in it as seed.
 
         Args:
-            x: numpy.ndarray containing the coordinates of the samples that
+            x (:obj:`numpy.ndarray`): The coordinates of the samples that
                 need to be added to the `Population` object. The shape
                 of each entry in this array should match the shape of the
                 already stored entries.
@@ -407,7 +392,8 @@ class ParticleFilter:
         self.callback("after_population_init")
 
     def sample_seed(self, n, sampler=samplers.uniform_sampler):
-        """ Samples `n` datapoints with the provided `sampler` method.
+        """
+        Samples `n` datapoints with the provided `sampler` method.
 
         The ranges within the samples are taken is taken as the `boundaries`
         property of the `ParticleFilter` object.
@@ -418,9 +404,10 @@ class ParticleFilter:
         seed in a `Population` object.
 
         Args:
-            n: `int` defining the number of samples to take.
-            sampler: Sampler function from the `samplers` module. Default is
-                `samplers.uniform`. """
+            n (:obj:`int`): The number of samples to sample.
+            sampler (:obj:`callable`): Sampler function from the `samplers`
+                module. Default is `samplers.uniform`.
+        """
         # Validate that there is no data already stored in the ParticleFilter
         # and validate the provided sampler
         self.validate_emptiness()
@@ -513,15 +500,15 @@ class ParticleFilter:
         1.  Update the width using the `width_controller`;
         2.  Calculate procreation rates using `calculate_procreation_rates`;
         3.  Calculate the standard deviations for the normal distributions with
-            the provided `stdev_controller`;
+        the provided `stdev_controller`;
         4a. Sample new points
         4b. Evaluate their function values using the `function` provided at
-            initialisation of the `ParticleFilter` object.
+        initialisation of the `ParticleFilter` object.
         4c. Store the samples and their function values.
         5.  Determine which data points should be removed from the population
-            with the `kill_controller`.
+        with the `kill_controller`.
         6a. Remove the points on the kill list, together with their function
-            values, from the ParticleFilter.
+        values, from the ParticleFilter.
         6b. End iteration. """
         self.iteration += 1
         self.callback('at_start_of_iteration')

@@ -10,14 +10,15 @@ def validate_boundaries(boundaries, dimensionality=None):
     `procreate` method follow the expected rules.
 
     Allowed settings of the provided boundaries are:
-    - `None`, indicating that there are no boundaries. This value will be
+
+    * :obj:`None`, indicating that there are no boundaries. This value will be
       returned unaltered.
-    - A `numpy.ndarray` of shape `(1, 2)` (or an array that is reshapable
+    * A `numpy.ndarray` of shape `(1, 2)` (or an array that is reshapable
       to this shape) that provides the upper and lower boundary that are
       the same for all dimensions. This method will expand this array to
       `(nDimensions, 2)`, where all rows will have the same entries, making
       the boundary array more explicit.
-    - A `numpy.ndarray` of shape `(nDimensions, 2)` indicating for each
+    * A `numpy.ndarray` of shape `(nDimensions, 2)` indicating for each
       of the dimensions the upper and lower boundary.
 
     Args:

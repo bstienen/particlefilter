@@ -69,16 +69,16 @@ def get_kill_controller(survival_rate=0.2, cut_to_iteration_size=False):
     the exponential growth of the population).
 
     Args:
-        survival_rate: `float` between 0 and 1, defining which fraction of
-            data points from previous iterations should be kept for the next
-            iteration. Default is 0.2.
-        cut_to_iteration_size: `bool` defining if, after selecting data points,
-            the selection should be cut down to have its length match iteration
-            size. Default is `False`.
+        survival_rate (:obj:`float`): Defines which fraction of data points
+            from previous iterations should be kept for the next iteration.
+            Default is 0.2.
+        cut_to_iteration_size (:obj:`bool`): defining if, after selecting data
+            points, the selection should be cut down to have its length match
+            iteration size. Default is :obj:`False` .
 
     Returns:
-        A width controller taking three arguments: the function values `y`,
-        an array of booleans indicating if the corresponding `y`s are sampled
+        A width controller taking three arguments: the function values `y` ,
+        an array of booleans indicating if the corresponding `y` s are sampled
         in the most recent iteration and the iteration_size. See its docstring
         for more information.
 
