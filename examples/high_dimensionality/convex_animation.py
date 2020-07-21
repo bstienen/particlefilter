@@ -68,7 +68,7 @@ hist_max = np.sqrt(15*15*n_dimensions)+1
 
 # Let's run the iterations and create the histogram we need in each of them.
 n_iterations = 100
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 for iteration in range(n_iterations):
     print("Iteration {}".format(iteration))
     optimiser.run_iteration()

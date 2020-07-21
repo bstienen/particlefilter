@@ -75,7 +75,7 @@ optimiser.set_seed(x_seed, y_seed)
 
 # Let's run the optimisation.
 n_iterations = 250
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 
 for iteration in range(1, n_iterations+1):
     if iteration % 10 == 0:

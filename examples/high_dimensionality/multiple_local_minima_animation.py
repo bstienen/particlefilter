@@ -88,7 +88,7 @@ hist_max = np.sqrt(15*15*n_dimensions)+1
 
 # Let's run the optimisation.
 n_iterations = 250
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 
 for iteration in range(1, n_iterations+1):
     if iteration % 10 == 0:

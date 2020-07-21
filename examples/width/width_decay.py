@@ -75,7 +75,7 @@ optimiser.set_seed(x_seed, y_seed)
 n_iterations = 100
 widths = [None] * n_iterations
 
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 for iteration in range(n_iterations):
     optimiser.run_iteration()
     widths[iteration] = optimiser.width

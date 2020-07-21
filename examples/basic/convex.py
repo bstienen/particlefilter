@@ -50,7 +50,7 @@ optimiser.set_seed(x_seed, y_seed)
 # run to 100, but it is illustrative to change this number and see how the
 # results of this code (see below) change!
 n_iterations = 100
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 for iteration in range(n_iterations):
     optimiser.run_iteration()
 
