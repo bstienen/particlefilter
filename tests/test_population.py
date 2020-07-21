@@ -352,3 +352,19 @@ def test_graveyard(tmp_path):
     assert pop._graveyard_handle is not None
     pop.make_graveyard()
     assert pop._graveyard_handle is None
+
+
+def test_empty_graveyard(tmp_path):
+    x, y, pop = get_population_and_data(10)
+    path = str(tmp_path)+"/graveyard.csv"
+    pop.make_graveyard(path)
+
+    origin = np.zeros(10).reshape(10, 1)
+    pop.send_to_graveyard(x, y, origin)
+    graveyard = np.genfromtxt(path, skip_header=1, delimiter=',')
+    assert graveyard.shape == (10, 5)
+
+    pop.make_graveyard()
+    pop.send_to_graveyard(x, y, origin)
+    graveyard = np.genfromtxt(path, skip_header=1, delimiter=',')
+    assert graveyard.shape == (10, 5)
