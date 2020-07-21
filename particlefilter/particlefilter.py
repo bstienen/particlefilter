@@ -503,24 +503,24 @@ class ParticleFilter:
 
     def initialise_run(self, graveyard_path=None):
         """ Start the run by initialising the iteration counter.
-        
+
         By setting `graveyard_path` to anything than its default `None` value,
         the `Population` object will store all killed data points in the
         provided path, in .csv format. The file will contain the coordinates
         `x`, the function values `y` and the iteration of origin. Use the
         `change_graveyard` method to change the target file (which you can
         do mid-run).
-        
+
         Args:
             graveyard_path: Path to which killed data points should be stored.
         """
         self.iteration = 0
         self.callback("at_start_of_run")
         self.population.make_graveyard(graveyard_path)
-    
+
     def change_graveyard(self, graveyard_path=None):
         """ Change the location to which killed datapoints should be written.
-        
+
         Args:
             graveyard_path: Path to which killed data points should be stored.
                 Data is stored in .csv format and contains the coordinates `x`,
