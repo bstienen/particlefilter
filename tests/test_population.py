@@ -324,3 +324,31 @@ def test_save_2(tmp_path):
     filepath = '{}/csv_file.csv'.format(tmp_path)
     pop.save(filepath)
     assert os.path.exists(filepath)
+
+
+def test_graveyard(tmp_path):
+    x, y, pop = get_population_and_data(10)
+
+    assert not pop.has_graveyard()
+    path = str(tmp_path)+"/graveyard.csv"
+    # Make sure file is made by make_graveyard
+    assert not os.path.exists(path)
+    pop.make_graveyard(path)
+    assert os.path.exists(path)
+    assert pop.has_graveyard()
+
+    # Populate graveyard
+    pop.append(x+1, y+1)
+    pop._now += 1
+    pop.append(x+2, y+2)
+    pop.set_kill_list(pop.origin_iteration == 0.0)
+    pop.send_to_graveyard(*pop.get_data_on_kill_list_with_origin())
+
+    # Assert that there are 10 datapoints on graveyard
+    graveyard = np.genfromtxt(path, skip_header=1, delimiter=',')
+    assert graveyard.shape == (10, 5)
+
+    # Set new graveyard
+    assert pop._graveyard_handle is not None
+    pop.make_graveyard()
+    assert pop._graveyard_handle is None
