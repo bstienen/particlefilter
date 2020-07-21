@@ -175,6 +175,7 @@ class ParticleFilter:
         - after_kill_controller_call
         - before_kill_data
         - at_end_of_iteration
+        - at_end_of_run
 
         Args:
             name: Name of the callback which has to be checked for existence.
@@ -333,6 +334,7 @@ class ParticleFilter:
             'after_kill_controller_call': [],
             'before_kill_data': [],
             'at_end_of_iteration': [],
+            'at_end_of_run': []
         }
 
     def add_callback(self, name, function=None):
@@ -585,3 +587,12 @@ class ParticleFilter:
         self.callback('before_kill_data')
         self.population.end_iteration()
         self.callback('at_end_of_iteration')
+
+    def end_run(self):
+        """ Ends the run by sending all remaining data to the graveyard and 
+        resetting the ParticleFilter object through the `reset` method.
+        """
+        self.population.send_to_graveyard(
+            *self.population.get_data_with_origin_information())
+        self.reset()
+        self.callback("at_end_of_run")
