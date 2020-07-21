@@ -130,6 +130,7 @@ class Population:
         self.kill_list[:len(kill_list)] = kill_list
 
     """ Smart selection getters """
+
     # Methods in this section allow the user to quickly get subsets of or
     # metrics about the data stored in this `Population` object.
 
@@ -185,7 +186,7 @@ class Population:
             y: numpy.ndarray containing the function values for the returned
                 `x`. """
         return (self.x[self.kill_list], self.y[self.kill_list])
-    
+
     def get_data_on_kill_list_with_origin(self):
         """ Returns the coordinates, function values and origin iteration for
         which the removal flag in the `kill_list` property is `True`.
@@ -198,8 +199,7 @@ class Population:
                 `x`.
             origin: `numpy.ndarray` containing the iteration ID in which each
                 of the data points in `x`. """
-        return (self.x[self.kill_list],
-                self.y[self.kill_list],
+        return (self.x[self.kill_list], self.y[self.kill_list],
                 self.origin_iteration[self.kill_list])
 
     def get_latest_data(self):
@@ -281,6 +281,7 @@ class Population:
         return means, stdevs
 
     """ Methods for validation and reshaping of input """
+
     # The `Population` class expects input given by the user to be of a
     # certain type and shape. The methods defined in this section apply checks
     # to a wide range of input given by the user and return nicely formatted
@@ -531,6 +532,7 @@ class Population:
         return kill_list
 
     """ Data methods """
+
     # Data methods allow the addition of new data to the Population object
     # and the configuration of meta arrays, like `procreation_rates` and
     # `kill_list`. Although all these values are stored in properties of the
@@ -678,6 +680,7 @@ class Population:
         self.kill_list = kill_list
 
     """ Iteration methods """
+
     # Iteration methods are used to control the iteration. Examples of
     # iteration methods are the `procreate` method, used to sample new data
     # points from provided gaussian stdevs and procreation rates, and the
@@ -880,6 +883,7 @@ class Population:
         self._now += 1
 
     """ Storage and abstraction methods """
+
     # These storage and abstraction methods allow the user to store the current
     # state of the Population object and to get general information about
     # it.
@@ -902,7 +906,7 @@ class Population:
 
         Args:
             filename: Path to which the data should be written. If set to
-                `None`, the graveyard will be considered 'not set' and no 
+                `None`, the graveyard will be considered 'not set' and no
                 killed data will be stored. """
         # Close previous graveyard (if exists)
         if self.has_graveyard():
@@ -912,7 +916,7 @@ class Population:
         if filename is not None:
             self._graveyard_handle = open(os.path.abspath(filename), 'w')
             self._graveyard_has_header = False
-    
+
     def send_to_graveyard(self, x, y, origin):
         """ Store provided data in the graveyard file, defined with the
         `make_graveyard` method.
@@ -928,15 +932,16 @@ class Population:
         if self.has_graveyard():
             # Write header if not already done
             if not self._graveyard_has_header:
-                header = ['current_iteration', 'origin_iteration'] + ['x'+str(i) for i in range(len(x[0]))] + ['y']
+                header = ['current_iteration', 'origin_iteration'
+                          ] + ['x' + str(i) for i in range(len(x[0]))] + ['y']
                 self._graveyard_handle.write(','.join(header) + "\n")
                 self._graveyard_has_header = True
             # Populate with data
-            data = np.hstack((np.ones((len(x), 1))*self._now,
-                              x, y.reshape(-1, 1),
+            data = np.hstack((np.ones(
+                (len(x), 1)) * self._now, x, y.reshape(-1, 1),
                               origin.reshape(-1, 1))).astype(np.str).tolist()
             addition = "\n".join([','.join(data[i]) for i in range(len(data))])
-            self._graveyard_handle.write(addition+"\n")
+            self._graveyard_handle.write(addition + "\n")
             self._graveyard_handle.flush()
 
     def save(self, filepath):
