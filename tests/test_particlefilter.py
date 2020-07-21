@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """ Tests for the ParticleFilter class in the particlefilter package. """
+import os
 import pytest
 import numpy as np
 
@@ -145,3 +146,29 @@ def test_run_iteration():
 
     pf.initialise_run()
     pf.run_iteration()
+
+
+def test_run_iteration_with_graveyard(tmp_path):
+    pf = ParticleFilter(func, 10,
+                        initial_width=0.00001,
+                        boundaries=np.array([[0, 1], [0, 1]]),
+                        kill_controller=get_kill_controller(0.2, False))
+    graveyard = str(tmp_path)+"/graveyard.csv"
+
+    x = np.random.rand(100, 2)
+    y = np.arange(100)
+    pf.set_seed(x, y)
+
+    pf.initialise_run(graveyard)
+    pf.run_iteration()
+    assert os.path.exists(graveyard)
+    os.remove(graveyard)
+    assert not os.path.exists(graveyard)
+
+    pf.change_graveyard(None)
+    pf.run_iteration()
+    assert not os.path.exists(graveyard)
+
+    pf.change_graveyard(graveyard)
+    pf.run_iteration()
+    assert os.path.exists(graveyard)
