@@ -729,7 +729,7 @@ class Population:
         out_of_bounds = np.array([True] * means.shape[0])
         samples = np.zeros(means.shape)
         attempts = 0
-        while np.sum(out_of_bounds) != 0 and attempts < max_attempts:
+        while np.sum(out_of_bounds) != 0 and attempts <= max_attempts:
             samples[out_of_bounds] = self._sample(means[out_of_bounds],
                                                   covs[out_of_bounds])
             out_of_bounds[out_of_bounds] = self._is_out_of_bounds(
