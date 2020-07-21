@@ -57,9 +57,9 @@ def store_population(iteration, width, function, population):
 # Add these callbacks to the particle filter. The README in the callback
 # examples folder lists which handles you can define.
 optimiser.add_callback("at_start_of_iteration", print_iteration_number)
-optimiser.add_callback("after_kill_data", store_population)
+#optimiser.add_callback("after_kill_data", store_population)
 optimiser.add_callback("at_end_of_iteration", print_population_size)
-optimiser.add_callback("at_end_of_iteration", store_population)
+optimiser.add_callback("before_kill_controller_call", store_population)
 
 # That's all! We can now run the iterations of the particle filter, after
 # initialising the run, with a simple for-loop and the `run_iteration` method

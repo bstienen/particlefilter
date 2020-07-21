@@ -67,11 +67,12 @@ optimiser.set_seed(x_seed, y_seed)
 n_iterations = 100
 widths = [None] * n_iterations
 
-optimiser.initialise_run()
+optimiser.initialise_run(graveyard_path="./graveyard.csv")
 for iteration in range(n_iterations):
     optimiser.run_iteration()
     widths[iteration] = optimiser.width
     print(optimiser.width)
+optimiser.end_run()
 
 # Let's create a plot of the widths used for each of the epochs, to validate
 # that it indeed decreased the width at the requested rate.
