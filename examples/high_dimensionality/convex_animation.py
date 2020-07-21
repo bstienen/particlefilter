@@ -77,7 +77,8 @@ for iteration in range(n_iterations):
     plt.hist(y, 20)
     plt.xscale('log')
     camera.snap()
-    
+optimiser.end_run()
+
 # Store the animation as convex.mp4 in the current folder.
 animation = camera.animate()
 animation.save('convex.mp4')

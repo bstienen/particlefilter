@@ -52,6 +52,7 @@ n_iterations = 100
 optimiser.initialise_run(graveyard_path="./graveyard.csv")
 for iteration in range(n_iterations):
     optimiser.run_iteration()
+optimiser.end_run()
 
 # To visually *see* how the optimisation algorithm did, we plot the data from
 # the latest iteration in a scatter plot (with function values indicated by
