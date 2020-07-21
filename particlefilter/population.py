@@ -894,9 +894,7 @@ class Population:
         Returns:
             Boolean indicating if the graveyard has been defined (`True`) or
             not (`False`). """
-        if hasattr(self, '_graveyard_handle'):
-            return self._graveyard_handle is not None
-        return False
+        return self._graveyard_handle is not None
 
     def make_graveyard(self, filename=None):
         """ Creates a graveyard file to which, before the end of each
