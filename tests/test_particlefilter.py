@@ -146,6 +146,7 @@ def test_run_iteration():
 
     pf.initialise_run()
     pf.run_iteration()
+    pf.end_run()
 
 
 def test_run_iteration_with_graveyard(tmp_path):
@@ -172,3 +173,22 @@ def test_run_iteration_with_graveyard(tmp_path):
     pf.change_graveyard(graveyard)
     pf.run_iteration()
     assert os.path.exists(graveyard)
+    pf.end_run()
+
+
+def test_end_iteration_with_graveyard(tmp_path):
+    pf = ParticleFilter(func, 100,
+                        initial_width=0.00001,
+                        boundaries=np.array([[0, 1], [0, 1]]),
+                        kill_controller=get_kill_controller(0.2, False))
+    graveyard = str(tmp_path)+"/graveyard.csv"
+
+    x = np.random.rand(100, 2)
+    y = np.arange(100)
+    pf.set_seed(x, y)
+    pf.initialise_run(graveyard)
+    pf.run_iteration()
+    pf.end_run()
+
+    graveyard = np.genfromtxt(graveyard, delimiter=',', skip_header=1)
+    assert graveyard.shape == (200, 5)

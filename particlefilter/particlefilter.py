@@ -589,7 +589,7 @@ class ParticleFilter:
         self.callback('at_end_of_iteration')
 
     def end_run(self):
-        """ Ends the run by sending all remaining data to the graveyard and 
+        """ Ends the run by sending all remaining data to the graveyard and
         resetting the ParticleFilter object through the `reset` method.
         """
         self.population.send_to_graveyard(
