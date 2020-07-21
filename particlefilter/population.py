@@ -445,7 +445,7 @@ class Population:
                 full_stdevs[idx] = stdevs
             if len(stdevs.shape) == 1 or (len(stdevs.shape) == 2
                                           and stdevs.shape[1] == 1):
-                for i in range(full_stdevs.shape[1]):
+                for i in range(self.x.shape[1]):
                     full_stdevs[idx, i] = stdevs
             stdevs = full_stdevs
         # Standard deviations are provided for *all* data in the
@@ -792,7 +792,7 @@ class Population:
         # Allocate space for the samples we have to take
         samples = np.zeros(means.shape)
         # Loop over all samples to take and take them
-        for i in range(samples.shape[0]):
+        for i in range(means.shape[0]):
             samples[i] = np.random.multivariate_normal(means[i], covs[i])
         return samples
 
