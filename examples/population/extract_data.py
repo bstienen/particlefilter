@@ -77,3 +77,7 @@ x, y = population.get_procreating_data()  # Will return approx. 75 points
 # To get all data points that have been slated for deletion at the end of the
 # current iteration, we request all data points on the 'kill list'.
 x, y = population.get_data_on_kill_list()
+
+# If you also want to get the iteration of origin for the to-be-deleted points
+# this method is the one you are looking for
+x, y, origin = population.get_data_on_kill_list_with_origin()
