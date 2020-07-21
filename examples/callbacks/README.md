@@ -40,3 +40,4 @@ Below you can find a list of locations to which you can assign callback function
 - **`after_kill_controller_call`**: called right after the kill controller, that determines which points are removed at the end of the iteration, is called. It is essentially the same as `before_kill_data`.
 - **`before_kill_data`**: called before the data marked for removal is removed from the population. It is essentially the same as `after_kill_controller_call`.
 - **`at_end_of_iteration`**: called at the end of each iteration, i.e. after the data marked for removal is removed.
+- **`at_end_of_run`**: called at the end of a run, i.e. the final step of the `ParticleFilter.end_run` method.
