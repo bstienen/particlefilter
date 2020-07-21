@@ -874,10 +874,10 @@ class Population:
     def end_iteration(self):
         """ Wraps up the current iteration by increasing the iteration counter
         and killing unkilled data (if applicable)."""
-        # Increase iteration counter
-        self._now += 1
         # Kill data
         self.kill_data()
+        # Increase iteration counter
+        self._now += 1
 
     """ Storage and abstraction methods """
     # These storage and abstraction methods allow the user to store the current
@@ -904,11 +904,14 @@ class Population:
             filename: Path to which the data should be written. If set to
                 `None`, the graveyard will be considered 'not set' and no 
                 killed data will be stored. """
+        # Close previous graveyard (if exists)
         if self.has_graveyard():
             self._graveyard_handle.close()
         self._graveyard_handle = None
+        # Create new graveyard, if asked
         if filename is not None:
             self._graveyard_handle = open(os.path.abspath(filename), 'w')
+            self._graveyard_has_header = False
     
     def send_to_graveyard(self, x, y, origin):
         """ Store provided data in the graveyard file, defined with the
@@ -923,9 +926,18 @@ class Population:
             origin: `numpy.ndarray` containing the iteration ID in which each
                 of the data points in `x`was sampled. """
         if self.has_graveyard():
-            data = np.hstack((x, y.reshape(-1,1), origin))
-            addition = '\n'.join([','.join(data[i]) for i in range(len(data))])
-            self._graveyard_handle.write(addition)
+            # Write header if not already done
+            if not self._graveyard_has_header:
+                header = ['current_iteration', 'origin_iteration'] + ['x'+str(i) for i in range(len(x[0]))] + ['y']
+                self._graveyard_handle.write(','.join(header) + "\n")
+                self._graveyard_has_header = True
+            # Populate with data
+            data = np.hstack((np.ones((len(x), 1))*self._now,
+                              x, y.reshape(-1, 1),
+                              origin.reshape(-1, 1))).astype(np.str).tolist()
+            addition = "\n".join([','.join(data[i]) for i in range(len(data))])
+            self._graveyard_handle.write(addition+"\n")
+            self._graveyard_handle.flush()
 
     def save(self, filepath):
         """ This method stores the current content of the Population to a
