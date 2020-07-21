@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import logging
 import numpy as np
 
@@ -907,7 +908,7 @@ class Population:
             self._graveyard_handle.close()
         self._graveyard_handle = None
         if filename is not None:
-            self._graveyard_handle = open(filename)
+            self._graveyard_handle = open(os.path.abspath(filename), 'w')
     
     def send_to_graveyard(self, x, y, origin):
         """ Store provided data in the graveyard file, defined with the
